@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Escape the Grammar Room</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #ffffff;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --accent: #2563eb;
+      --good: #16a34a;
+      --bad: #dc2626;
+      --warn: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.35), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(245, 158, 11, 0.25), transparent 35%),
+        var(--bg);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(960px, 100%);
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+    }
+
+    header {
+      padding: 28px 28px 20px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(135deg, #ffffff, #f8fafc);
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.08;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .progress {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .step {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 6px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      background: #f8fafc;
+    }
+
+    .step.active {
+      border-color: var(--accent);
+      background: #eff6ff;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .step.done {
+      border-color: #bbf7d0;
+      background: #f0fdf4;
+      color: var(--good);
+      font-weight: 700;
+    }
+
+    .room {
+      display: none;
+      animation: fade 0.28s ease;
+    }
+
+    .room.active {
+      display: block;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 24px;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .lock-title {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin: 0 0 12px;
+      font-size: 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #eff6ff;
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    .clue {
+      background: #f8fafc;
+      border: 1px dashed #cbd5e1;
+      border-radius: 18px;
+      padding: 16px;
+      line-height: 1.7;
+      margin: 16px 0;
+      font-size: 16px;
+    }
+
+    .english {
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    .choices {
+      display: grid;
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .choice {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      padding: 16px;
+      text-align: left;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .choice:hover {
+      border-color: var(--accent);
+      background: #eff6ff;
+      transform: translateY(-1px);
+    }
+
+    button {
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--accent);
+      color: #ffffff;
+      transition: 0.18s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.96);
+    }
+
+    button.secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    button.ghost {
+      background: #ffffff;
+      color: var(--accent);
+      border: 1px solid #bfdbfe;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    input, textarea, select {
+      flex: 1;
+      min-width: 220px;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 13px 14px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      display: none;
+      line-height: 1.55;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.good {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .feedback.bad {
+      background: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fecaca;
+    }
+
+    .teacher-box {
+      border: 2px solid #fed7aa;
+      background: #fff7ed;
+      border-radius: 20px;
+      padding: 18px;
+      margin: 18px 0;
+    }
+
+    .teacher-box strong {
+      color: #9a3412;
+    }
+
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0;
+    }
+
+    .pill {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .result-card {
+      border-radius: 24px;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+      border: 1px solid #bfdbfe;
+      padding: 24px;
+      margin-top: 16px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 12px;
+      }
+
+      header, main {
+        padding: 18px;
+      }
+
+      .progress {
+        grid-template-columns: 1fr;
+      }
+
+      .lock-title {
+        font-size: 21px;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="eyebrow">Grammar Mission</div>
+      <h1>Escape the Grammar Room</h1>
+      <p class="subtitle">
+        Read the clues carefully. The doors will open <strong>as long as</strong> you understand the condition.
+      </p>
+    </header>
+
+    <main>
+      <div class="progress" id="progress"></div>
+
+      <section class="room active" id="room0">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">▶</span> Welcome to the Grammar Room</h2>
+          <p>
+            You are locked in the Grammar Room. To escape, you must open five locks.
+            Work with your team and write important answers on your worksheet.
+          </p>
+          <div class="clue">
+            Today’s key expression is <span class="english">as long as</span>.<br />
+            It can mean <strong>“~하는 한 / ~하기만 하면”</strong> when it shows a condition.
+          </div>
+          <button onclick="goToRoom(1)">Start Mission</button>
+        </div>
+      </section>
+
+      <section class="room" id="room1">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">1</span> Lock 1. The Key of Bad Luck</h2>
+          <div class="clue">
+            <span class="english">The first door opens as long as you choose the key filled with bad luck.</span><br />
+            The biggest key is too proud.<br />
+            The brightest key is trying to trick you.<br />
+            Choose the key that carries the number people fear.
+          </div>
+          <div class="choices">
+            <button class="choice" onclick="checkChoice(1, false)">Key A: a big golden key with the number 12</button>
+            <button class="choice" onclick="checkChoice(1, true)">Key B: a small silver key with the number 13</button>
+            <button class="choice" onclick="checkChoice(1, false)">Key C: a shiny red key with the number 7</button>
+          </div>
+          <div id="fb1" class="feedback"></div>
+        </div>
+      </section>
+
+      <section class="room" id="room2">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">2</span> Lock 2. Teacher Battle</h2>
+          <div class="clue">
+            <span class="english">You can pass through the second door as long as you beat the teacher in Rock-Paper-Scissors.</span><br />
+            If you lose, complete the Retry Mission.<br />
+            Unless you get the teacher’s secret key, the door will stay closed.
+          </div>
+
+          <div class="teacher-box">
+            <strong>Offline Mission</strong><br />
+            1. Choose one team representative.<br />
+            2. Play Rock-Paper-Scissors with the teacher.<br />
+            3. If you win, ask the teacher to enter the secret key.<br />
+            4. If you lose, complete the Retry Mission first.
+          </div>
+
+          <p><strong>Retry Mission</strong></p>
+          <div class="clue">
+            Write this textbook sentence in a full sentence on your worksheet:<br />
+            <span class="english">As long as you are happy and healthy, nothing else matters.</span>
+          </div>
+
+          <div class="input-row">
+            <input type="password" id="teacherKey" placeholder="Enter Teacher Key" autocomplete="off" />
+            <button onclick="checkTeacherKey()">UNLOCK</button>
+          </div>
+          <p class="hint">교사용 해제키 기본값: <strong>OPEN2</strong> — 수업 전에 코드에서 바꿀 수 있음.</p>
+          <div id="fb2" class="feedback"></div>
+        </div>
+      </section>
+
+      <section class="room" id="room3">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">3</span> Lock 3. The Time Password</h2>
+          <div class="clue">
+            <span class="english">Find the sentence that gives you time.</span><br />
+            The password is under that sentence.
+          </div>
+
+          <div class="choices">
+            <button class="choice" onclick="checkChoice(3, false)">
+              A. You can escape as long as you find the final key.<br />
+              <span class="small">Password: ESCAPE</span>
+            </button>
+            <button class="choice" onclick="checkChoice(3, true)">
+              B. Take as long as you need, but do not look back.<br />
+              <span class="small">Password: NEED</span>
+            </button>
+            <button class="choice" onclick="checkChoice(3, false)">
+              C. You are safe as long as you stay together.<br />
+              <span class="small">Password: SAFE</span>
+            </button>
+          </div>
+          <div id="fb3" class="feedback"></div>
+        </div>
+      </section>
+
+      <section class="room" id="room4">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">4</span> Lock 4. The Reversed Spell</h2>
+          <div class="clue">
+            <span class="english">If your team reads the sentence correctly, the spell will disappear.</span><br />
+            <span class="english">The spell will disappear as long as your team reads the sentence correctly.</span><br /><br />
+            Now change it into an <strong>unless</strong> sentence with the same meaning.
+          </div>
+
+          <p><strong>Choose the correct sentence.</strong></p>
+          <div class="choices">
+            <button class="choice" onclick="checkChoice(4, false)">
+              A. The spell will disappear unless your team reads the sentence correctly.
+            </button>
+            <button class="choice" onclick="checkChoice(4, true)">
+              B. The spell will not disappear unless your team reads the sentence correctly.
+            </button>
+            <button class="choice" onclick="checkChoice(4, false)">
+              C. Unless the spell disappears, your team reads the sentence correctly.
+            </button>
+          </div>
+
+          <div class="hint">
+            정답을 고른 뒤, 모둠이 함께 문장을 소리 내어 읽으면 주문이 해제됩니다.
+          </div>
+          <div id="fb4" class="feedback"></div>
+        </div>
+      </section>
+
+      <section class="room" id="room5">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">5</span> Lock 5. The Final English Class Rule</h2>
+          <div class="clue">
+            <span class="english">The final door will open as long as your class makes one rule for this room.</span><br />
+            Make one English class rule using <strong>as long as</strong>.
+          </div>
+
+          <p><strong>Sentence Frame</strong></p>
+          <div class="clue">
+            <span class="english">We can have a great English class as long as we ____________________.</span>
+          </div>
+
+          <div class="word-bank">
+            <span class="pill">listen to each other</span>
+            <span class="pill">try our best</span>
+            <span class="pill">respect each other</span>
+            <span class="pill">don’t fall asleep</span>
+            <span class="pill">speak in English</span>
+            <span class="pill">help our friends</span>
+          </div>
+
+          <div class="input-row">
+            <textarea id="finalRule" placeholder="Write your rule here. Example: We can have a great English class as long as we listen to each other."></textarea>
+          </div>
+          <div class="input-row">
+            <button onclick="checkFinalRule()">OPEN THE FINAL DOOR</button>
+          </div>
+          <div id="fb5" class="feedback"></div>
+        </div>
+      </section>
+
+      <section class="room" id="room6">
+        <div class="card">
+          <h2 class="lock-title"><span class="badge">✓</span> You Escaped!</h2>
+          <div class="result-card">
+            <h3>Congratulations!</h3>
+            <p>
+              You escaped the Grammar Room because you understood the conditions.
+            </p>
+            <p class="english" id="savedRule"></p>
+          </div>
+
+          <div class="clue">
+            Remember:<br />
+            <strong>where</strong> explains a place.<br />
+            <strong>as long as</strong> can show a condition or time/duration.
+          </div>
+
+          <div class="footer-buttons">
+            <button onclick="goToRoom(1)" class="ghost">Review from Lock 1</button>
+            <button onclick="resetGame()" class="secondary">Reset Game</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // =========================
+    // Teacher Settings
+    // =========================
+    // 수업 전에 교사용 해제키를 바꾸고 싶으면 아래 값만 수정하세요.
+    const TEACHER_KEY = "OPEN2";
+
+    let currentRoom = 0;
+    let highestUnlocked = Number(localStorage.getItem("highestUnlocked") || "0");
+    let finalRuleText = localStorage.getItem("finalRuleText") || "";
+
+    function renderProgress() {
+      const progress = document.getElementById("progress");
+      progress.innerHTML = "";
+      for (let i = 1; i <= 5; i++) {
+        const item = document.createElement("div");
+        item.className = "step";
+        item.textContent = "Lock " + i;
+        if (i < currentRoom || currentRoom === 6) item.classList.add("done");
+        if (i === currentRoom) item.classList.add("active");
+        progress.appendChild(item);
+      }
+    }
+
+    function goToRoom(n) {
+      if (n > highestUnlocked + 1 && n !== 6) {
+        alert("Previous lock must be opened first!");
+        return;
+      }
+
+      document.querySelectorAll(".room").forEach(room => room.classList.remove("active"));
+      document.getElementById("room" + n).classList.add("active");
+      currentRoom = n;
+
+      if (n > highestUnlocked && n <= 5) {
+        highestUnlocked = n - 1;
+        localStorage.setItem("highestUnlocked", String(highestUnlocked));
+      }
+
+      if (n === 6) {
+        document.getElementById("savedRule").textContent = finalRuleText ? "Your rule: " + finalRuleText : "";
+      }
+
+      renderProgress();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function unlockNext(current) {
+      highestUnlocked = Math.max(highestUnlocked, current);
+      localStorage.setItem("highestUnlocked", String(highestUnlocked));
+      setTimeout(() => goToRoom(current + 1), 900);
+    }
+
+    function showFeedback(id, type, message) {
+      const fb = document.getElementById("fb" + id);
+      fb.className = "feedback show " + type;
+      fb.innerHTML = message;
+    }
+
+    function checkChoice(lockNumber, isCorrect) {
+      if (isCorrect) {
+        const messages = {
+          1: "Correct! Key B carries the number 13. Door 1 opened.",
+          3: "Correct! “Take as long as you need” gives you time. Password: NEED.",
+          4: "Correct! The spell will not disappear unless your team reads the sentence correctly."
+        };
+        showFeedback(lockNumber, "good", messages[lockNumber] || "Correct!");
+        unlockNext(lockNumber);
+      } else {
+        showFeedback(lockNumber, "bad", "Not yet. Read the clue again and try another answer.");
+      }
+    }
+
+    function checkTeacherKey() {
+      const input = document.getElementById("teacherKey").value.trim().toUpperCase();
+      if (input === TEACHER_KEY) {
+        showFeedback(2, "good", "Teacher Key accepted! Door 2 opened.");
+        unlockNext(2);
+      } else {
+        showFeedback(2, "bad", "The door is still locked. Win the Teacher Battle or complete the Retry Mission.");
+      }
+    }
+
+    function normalizeText(text) {
+      return text.toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function checkFinalRule() {
+      const value = document.getElementById("finalRule").value.trim();
+      const normalized = normalizeText(value);
+
+      if (normalized.length < 20) {
+        showFeedback(5, "bad", "Write a full sentence first.");
+        return;
+      }
+
+      if (!normalized.includes("as long as")) {
+        showFeedback(5, "bad", "Use the expression “as long as” in your rule.");
+        return;
+      }
+
+      if (!normalized.startsWith("we can have")) {
+        showFeedback(5, "bad", "Start with the sentence frame: “We can have...”");
+        return;
+      }
+
+      finalRuleText = value;
+      localStorage.setItem("finalRuleText", finalRuleText);
+      showFeedback(5, "good", "Great rule! The final door is opening.");
+      setTimeout(() => goToRoom(6), 900);
+    }
+
+    function resetGame() {
+      localStorage.removeItem("highestUnlocked");
+      localStorage.removeItem("finalRuleText");
+      highestUnlocked = 0;
+      finalRuleText = "";
+      document.getElementById("teacherKey").value = "";
+      document.getElementById("finalRule").value = "";
+      document.querySelectorAll(".feedback").forEach(fb => {
+        fb.className = "feedback";
+        fb.innerHTML = "";
+      });
+      goToRoom(0);
+    }
+
+    renderProgress();
+  </script>
+</body>
+</html>
