@@ -15,7 +15,6 @@
       --accent-dark: #1d4ed8;
       --good: #16a34a;
       --bad: #dc2626;
-      --warn: #f59e0b;
       --soft-blue: #eff6ff;
       --soft-orange: #fff7ed;
       --soft-green: #f0fdf4;
@@ -194,6 +193,17 @@
       color: #111827;
     }
 
+    .translation {
+      color: #334155;
+      font-size: 15px;
+      line-height: 1.65;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+
     .hint {
       color: var(--muted);
       font-size: 14px;
@@ -323,22 +333,11 @@
       margin-top: 16px;
     }
 
-    .small {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
     .footer-buttons {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 20px;
-    }
-
-    .teacher-note {
-      margin-top: 14px;
-      font-size: 13px;
-      color: #64748b;
     }
 
     @media (max-width: 640px) {
@@ -405,24 +404,26 @@
             <span class="english">The first door opens as long as you choose the key filled with bad luck.</span><br />
             The biggest key is too proud.<br />
             The brightest key is trying to trick you.<br />
-            Choose the key that carries the number people fear.<br /><br />
-            Key A: a big golden key with the number 12<br />
-            Key B: a small silver key with the number 13<br />
-            Key C: a shiny red key with the number 7
+            Choose the key that carries the number people fear.
+          </div>
+
+          <div class="mission">
+            <strong>Mission</strong><br />
+            Complete the full sentence. Use today’s key expression and choose the number that symbolizes bad luck.
+            <div class="translation">
+              숫자 빈칸에는 <strong>불운을 상징하는 숫자</strong>를 넣으세요.
+            </div>
           </div>
 
           <div class="answer-area">
-            <label for="answer1">Write your answer and reason.</label>
-            <textarea id="answer1" placeholder="Example: Key __, because ..."></textarea>
-          </div>
-
-          <div class="teacher-box">
-            <strong>Teacher Check</strong><br />
-            If your answer is correct, your teacher will enter the open key.
-            Unless the open key is entered, the next door will stay closed.
-            <div class="open-key-row">
-              <input type="password" id="key1" placeholder="Teacher Open Key" autocomplete="off" />
-              <button onclick="checkOpenKey(1)">OPEN LOCK 1</button>
+            <label for="answer1">Complete the sentence.</label>
+            <textarea id="answer1" placeholder="The first door opens ____________ I have a key with the number ________."></textarea>
+            <div class="translation">
+              해석: 내가 ______번이 적힌 열쇠를 가지고 있기만 하면, 첫 번째 문이 열린다.
+            </div>
+            <button onclick="checkLock1Sentence()">CHECK SENTENCE</button>
+            <div class="hint">
+              Capital letters and spacing do not matter. Write the full sentence.
             </div>
           </div>
 
@@ -450,6 +451,9 @@
             <strong>Retry Mission</strong><br />
             Solve one textbook example on your worksheet.<br />
             <span class="english">You can try again as long as you solve one textbook example.</span>
+            <div class="translation">
+              해석: 교과서 예제 하나를 풀기만 하면, 다시 시도할 수 있다.
+            </div>
           </div>
 
           <div class="teacher-box">
@@ -664,6 +668,25 @@
       fb.innerHTML = message;
     }
 
+    function normalizeAnswer(text) {
+      return text
+        .toLowerCase()
+        .replace(/[.,!?;:'"“”‘’]/g, "")
+        .replace(/\s+/g, "");
+    }
+
+    function checkLock1Sentence() {
+      const userAnswer = document.getElementById("answer1").value;
+      const correctAnswer = "The first door opens as long as I have a key with the number 13.";
+
+      if (normalizeAnswer(userAnswer) === normalizeAnswer(correctAnswer)) {
+        showFeedback(1, "good", "Correct! Door 1 opened.");
+        unlockNext(1);
+      } else {
+        showFeedback(1, "bad", "Not yet. Use “as long as” and the number that symbolizes bad luck. Write the full sentence.");
+      }
+    }
+
     function checkOpenKey(lockNumber) {
       const input = document.getElementById("key" + lockNumber).value.trim();
       if (input === OPEN_KEYS[lockNumber]) {
@@ -699,7 +722,7 @@
       highestUnlocked = 0;
       finalRuleText = "";
 
-      ["answer1", "answer3", "answer4", "answer5", "key1", "key2", "key3", "key4", "key5"].forEach(id => {
+      ["answer1", "answer3", "answer4", "answer5", "key2", "key3", "key4", "key5"].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
