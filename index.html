@@ -9,12 +9,16 @@
       --bg: #0f172a;
       --card: #ffffff;
       --ink: #0f172a;
-      --muted: #64748b;
+      --muted: #475569;
       --line: #e2e8f0;
       --accent: #2563eb;
+      --accent-dark: #1d4ed8;
       --good: #16a34a;
       --bad: #dc2626;
       --warn: #f59e0b;
+      --soft-blue: #eff6ff;
+      --soft-orange: #fff7ed;
+      --soft-green: #f0fdf4;
     }
 
     * {
@@ -37,7 +41,7 @@
     }
 
     .app {
-      width: min(960px, 100%);
+      width: min(980px, 100%);
       background: var(--card);
       border-radius: 28px;
       box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
@@ -63,6 +67,7 @@
       margin: 0;
       font-size: clamp(28px, 5vw, 44px);
       line-height: 1.08;
+      color: var(--ink);
     }
 
     .subtitle {
@@ -95,14 +100,14 @@
 
     .step.active {
       border-color: var(--accent);
-      background: #eff6ff;
+      background: var(--soft-blue);
       color: var(--accent);
       font-weight: 700;
     }
 
     .step.done {
       border-color: #bbf7d0;
-      background: #f0fdf4;
+      background: var(--soft-green);
       color: var(--good);
       font-weight: 700;
     }
@@ -135,6 +140,7 @@
       align-items: center;
       margin: 0 0 12px;
       font-size: 24px;
+      color: var(--ink);
     }
 
     .badge {
@@ -144,7 +150,7 @@
       min-width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: #eff6ff;
+      background: var(--soft-blue);
       color: var(--accent);
       font-weight: 800;
     }
@@ -157,6 +163,30 @@
       line-height: 1.7;
       margin: 16px 0;
       font-size: 16px;
+      color: var(--ink);
+    }
+
+    .mission {
+      background: var(--soft-orange);
+      border: 1px solid #fed7aa;
+      border-radius: 18px;
+      padding: 16px;
+      line-height: 1.7;
+      margin: 16px 0;
+      color: #7c2d12;
+    }
+
+    .teacher-box {
+      border: 2px solid #bfdbfe;
+      background: var(--soft-blue);
+      border-radius: 20px;
+      padding: 18px;
+      margin: 18px 0;
+      color: #1e3a8a;
+    }
+
+    .teacher-box strong {
+      color: var(--accent-dark);
     }
 
     .english {
@@ -171,27 +201,49 @@
       margin-top: 8px;
     }
 
-    .choices {
+    .answer-area {
+      margin-top: 18px;
       display: grid;
       gap: 12px;
-      margin: 18px 0;
     }
 
-    .choice {
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #ffffff;
-      padding: 16px;
-      text-align: left;
+    label {
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 16px;
+      padding: 13px 14px;
       font-size: 16px;
-      cursor: pointer;
-      transition: 0.18s;
+      font-family: inherit;
+      color: var(--ink);
+      background: #ffffff;
     }
 
-    .choice:hover {
-      border-color: var(--accent);
-      background: #eff6ff;
-      transform: translateY(-1px);
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #94a3b8;
+    }
+
+    .open-key-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .open-key-row input {
+      flex: 1;
+      min-width: 220px;
     }
 
     button {
@@ -204,6 +256,7 @@
       background: var(--accent);
       color: #ffffff;
       transition: 0.18s;
+      white-space: nowrap;
     }
 
     button:hover {
@@ -213,36 +266,13 @@
 
     button.secondary {
       background: #e2e8f0;
-      color: #0f172a;
+      color: var(--ink);
     }
 
     button.ghost {
       background: #ffffff;
       color: var(--accent);
       border: 1px solid #bfdbfe;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 10px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    input, textarea, select {
-      flex: 1;
-      min-width: 220px;
-      border: 1px solid #cbd5e1;
-      border-radius: 16px;
-      padding: 13px 14px;
-      font-size: 16px;
-      font-family: inherit;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-      line-height: 1.5;
     }
 
     .feedback {
@@ -258,7 +288,7 @@
     }
 
     .feedback.good {
-      background: #f0fdf4;
+      background: var(--soft-green);
       color: #166534;
       border: 1px solid #bbf7d0;
     }
@@ -267,18 +297,6 @@
       background: #fef2f2;
       color: #991b1b;
       border: 1px solid #fecaca;
-    }
-
-    .teacher-box {
-      border: 2px solid #fed7aa;
-      background: #fff7ed;
-      border-radius: 20px;
-      padding: 18px;
-      margin: 18px 0;
-    }
-
-    .teacher-box strong {
-      color: #9a3412;
     }
 
     .word-bank {
@@ -317,6 +335,12 @@
       margin-top: 20px;
     }
 
+    .teacher-note {
+      margin-top: 14px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
     @media (max-width: 640px) {
       body {
         padding: 12px;
@@ -334,6 +358,10 @@
         font-size: 21px;
       }
 
+      .open-key-row {
+        display: grid;
+      }
+
       button {
         width: 100%;
       }
@@ -346,7 +374,8 @@
       <div class="eyebrow">Grammar Mission</div>
       <h1>Escape the Grammar Room</h1>
       <p class="subtitle">
-        Read the clues carefully. The doors will open <strong>as long as</strong> you understand the condition.
+        Read the clues carefully. The doors will open <strong>as long as</strong> your team understands the condition.
+        If your answer is approved, your teacher will enter the open key.
       </p>
     </header>
 
@@ -358,11 +387,12 @@
           <h2 class="lock-title"><span class="badge">▶</span> Welcome to the Grammar Room</h2>
           <p>
             You are locked in the Grammar Room. To escape, you must open five locks.
-            Work with your team and write important answers on your worksheet.
+            Work with your team, write your answers, and call your teacher when you are ready.
           </p>
           <div class="clue">
             Today’s key expression is <span class="english">as long as</span>.<br />
-            It can mean <strong>“~하는 한 / ~하기만 하면”</strong> when it shows a condition.
+            It can mean <strong>“~하는 한 / ~하기만 하면”</strong> when it shows a condition.<br />
+            You will also meet <span class="english">if</span> and <span class="english">unless</span> in the missions.
           </div>
           <button onclick="goToRoom(1)">Start Mission</button>
         </div>
@@ -375,13 +405,27 @@
             <span class="english">The first door opens as long as you choose the key filled with bad luck.</span><br />
             The biggest key is too proud.<br />
             The brightest key is trying to trick you.<br />
-            Choose the key that carries the number people fear.
+            Choose the key that carries the number people fear.<br /><br />
+            Key A: a big golden key with the number 12<br />
+            Key B: a small silver key with the number 13<br />
+            Key C: a shiny red key with the number 7
           </div>
-          <div class="choices">
-            <button class="choice" onclick="checkChoice(1, false)">Key A: a big golden key with the number 12</button>
-            <button class="choice" onclick="checkChoice(1, true)">Key B: a small silver key with the number 13</button>
-            <button class="choice" onclick="checkChoice(1, false)">Key C: a shiny red key with the number 7</button>
+
+          <div class="answer-area">
+            <label for="answer1">Write your answer and reason.</label>
+            <textarea id="answer1" placeholder="Example: Key __, because ..."></textarea>
           </div>
+
+          <div class="teacher-box">
+            <strong>Teacher Check</strong><br />
+            If your answer is correct, your teacher will enter the open key.
+            Unless the open key is entered, the next door will stay closed.
+            <div class="open-key-row">
+              <input type="password" id="key1" placeholder="Teacher Open Key" autocomplete="off" />
+              <button onclick="checkOpenKey(1)">OPEN LOCK 1</button>
+            </div>
+          </div>
+
           <div id="fb1" class="feedback"></div>
         </div>
       </section>
@@ -392,28 +436,32 @@
           <div class="clue">
             <span class="english">You can pass through the second door as long as you beat the teacher in Rock-Paper-Scissors.</span><br />
             If you lose, complete the Retry Mission.<br />
-            Unless you get the teacher’s secret key, the door will stay closed.
+            Unless you complete the mission or beat the teacher, the door will stay closed.
+          </div>
+
+          <div class="mission">
+            <strong>Offline Mission</strong><br />
+            Choose one team representative and play Rock-Paper-Scissors with the teacher.<br />
+            If your team wins, your teacher can open this lock.<br />
+            If your team loses, complete the Retry Mission first.
+          </div>
+
+          <div class="clue">
+            <strong>Retry Mission</strong><br />
+            Solve one textbook example on your worksheet.<br />
+            <span class="english">You can try again as long as you solve one textbook example.</span>
           </div>
 
           <div class="teacher-box">
-            <strong>Offline Mission</strong><br />
-            1. Choose one team representative.<br />
-            2. Play Rock-Paper-Scissors with the teacher.<br />
-            3. If you win, ask the teacher to enter the secret key.<br />
-            4. If you lose, complete the Retry Mission first.
+            <strong>Teacher Check</strong><br />
+            If the team wins the battle or completes the Retry Mission, enter the open key.
+            Unless the open key is entered, the next door will stay closed.
+            <div class="open-key-row">
+              <input type="password" id="key2" placeholder="Teacher Open Key" autocomplete="off" />
+              <button onclick="checkOpenKey(2)">OPEN LOCK 2</button>
+            </div>
           </div>
 
-          <p><strong>Retry Mission</strong></p>
-          <div class="clue">
-            Write this textbook sentence in a full sentence on your worksheet:<br />
-            <span class="english">As long as you are happy and healthy, nothing else matters.</span>
-          </div>
-
-          <div class="input-row">
-            <input type="password" id="teacherKey" placeholder="Enter Teacher Key" autocomplete="off" />
-            <button onclick="checkTeacherKey()">UNLOCK</button>
-          </div>
-          <p class="hint">교사용 해제키 기본값: <strong>OPEN2</strong> — 수업 전에 코드에서 바꿀 수 있음.</p>
           <div id="fb2" class="feedback"></div>
         </div>
       </section>
@@ -423,23 +471,31 @@
           <h2 class="lock-title"><span class="badge">3</span> Lock 3. The Time Password</h2>
           <div class="clue">
             <span class="english">Find the sentence that gives you time.</span><br />
-            The password is under that sentence.
+            If you find the correct sentence, explain why it gives you time.<br />
+            Unless your teacher approves your explanation, the password will not work.<br /><br />
+            A. You can escape as long as you find the final key. <br />
+            Password: ESCAPE<br /><br />
+            B. Take as long as you need, but do not look back. <br />
+            Password: NEED<br /><br />
+            C. You are safe as long as you stay together. <br />
+            Password: SAFE
           </div>
 
-          <div class="choices">
-            <button class="choice" onclick="checkChoice(3, false)">
-              A. You can escape as long as you find the final key.<br />
-              <span class="small">Password: ESCAPE</span>
-            </button>
-            <button class="choice" onclick="checkChoice(3, true)">
-              B. Take as long as you need, but do not look back.<br />
-              <span class="small">Password: NEED</span>
-            </button>
-            <button class="choice" onclick="checkChoice(3, false)">
-              C. You are safe as long as you stay together.<br />
-              <span class="small">Password: SAFE</span>
-            </button>
+          <div class="answer-area">
+            <label for="answer3">Write the sentence letter, password, and reason.</label>
+            <textarea id="answer3" placeholder="Example: I choose __. The password is __ because ..."></textarea>
           </div>
+
+          <div class="teacher-box">
+            <strong>Teacher Check</strong><br />
+            Say your answer to the teacher. If your explanation is accepted, your teacher will enter the open key.
+            Unless the open key is entered, the next door will stay closed.
+            <div class="open-key-row">
+              <input type="password" id="key3" placeholder="Teacher Open Key" autocomplete="off" />
+              <button onclick="checkOpenKey(3)">OPEN LOCK 3</button>
+            </div>
+          </div>
+
           <div id="fb3" class="feedback"></div>
         </div>
       </section>
@@ -450,25 +506,26 @@
           <div class="clue">
             <span class="english">If your team reads the sentence correctly, the spell will disappear.</span><br />
             <span class="english">The spell will disappear as long as your team reads the sentence correctly.</span><br /><br />
-            Now change it into an <strong>unless</strong> sentence with the same meaning.
+            Now change it into an <strong>unless</strong> sentence with the same meaning.<br />
+            If your sentence keeps the same meaning, the spell can disappear.<br />
+            Unless your sentence is checked by the teacher, the spell will stay.
           </div>
 
-          <p><strong>Choose the correct sentence.</strong></p>
-          <div class="choices">
-            <button class="choice" onclick="checkChoice(4, false)">
-              A. The spell will disappear unless your team reads the sentence correctly.
-            </button>
-            <button class="choice" onclick="checkChoice(4, true)">
-              B. The spell will not disappear unless your team reads the sentence correctly.
-            </button>
-            <button class="choice" onclick="checkChoice(4, false)">
-              C. Unless the spell disappears, your team reads the sentence correctly.
-            </button>
+          <div class="answer-area">
+            <label for="answer4">Write your unless sentence.</label>
+            <textarea id="answer4" placeholder="Write the full sentence using unless."></textarea>
           </div>
 
-          <div class="hint">
-            정답을 고른 뒤, 모둠이 함께 문장을 소리 내어 읽으면 주문이 해제됩니다.
+          <div class="teacher-box">
+            <strong>Teacher Check</strong><br />
+            Read your sentence aloud to the teacher. If the sentence is correct, your teacher will enter the open key.
+            Unless the open key is entered, the next door will stay closed.
+            <div class="open-key-row">
+              <input type="password" id="key4" placeholder="Teacher Open Key" autocomplete="off" />
+              <button onclick="checkOpenKey(4)">OPEN LOCK 4</button>
+            </div>
           </div>
+
           <div id="fb4" class="feedback"></div>
         </div>
       </section>
@@ -478,12 +535,16 @@
           <h2 class="lock-title"><span class="badge">5</span> Lock 5. The Final English Class Rule</h2>
           <div class="clue">
             <span class="english">The final door will open as long as your class makes one rule for this room.</span><br />
-            Make one English class rule using <strong>as long as</strong>.
+            Make one English class rule or classroom rule using <strong>as long as</strong>.<br />
+            If your rule is meaningful, the final door can open.<br />
+            Unless your teacher approves the rule, the Grammar Room will not let you out.
           </div>
 
-          <p><strong>Sentence Frame</strong></p>
+          <p><strong>Possible Sentence Frames</strong></p>
           <div class="clue">
-            <span class="english">We can have a great English class as long as we ____________________.</span>
+            <span class="english">We can have a great English class as long as we ____________________.</span><br />
+            <span class="english">We can have a better classroom as long as we ____________________.</span><br />
+            <span class="english">We can enjoy school life as long as we ____________________.</span>
           </div>
 
           <div class="word-bank">
@@ -493,14 +554,24 @@
             <span class="pill">don’t fall asleep</span>
             <span class="pill">speak in English</span>
             <span class="pill">help our friends</span>
+            <span class="pill">keep our classroom clean</span>
           </div>
 
-          <div class="input-row">
-            <textarea id="finalRule" placeholder="Write your rule here. Example: We can have a great English class as long as we listen to each other."></textarea>
+          <div class="answer-area">
+            <label for="answer5">Write your own rule freely.</label>
+            <textarea id="answer5" placeholder="Write one full sentence using as long as."></textarea>
           </div>
-          <div class="input-row">
-            <button onclick="checkFinalRule()">OPEN THE FINAL DOOR</button>
+
+          <div class="teacher-box">
+            <strong>Teacher Check</strong><br />
+            Share your rule with the teacher. If your rule uses <strong>as long as</strong> properly, your teacher will enter the final open key.
+            Unless the final open key is entered, you cannot escape.
+            <div class="open-key-row">
+              <input type="password" id="key5" placeholder="Teacher Open Key" autocomplete="off" />
+              <button onclick="checkFinalOpenKey()">OPEN FINAL DOOR</button>
+            </div>
           </div>
+
           <div id="fb5" class="feedback"></div>
         </div>
       </section>
@@ -511,7 +582,8 @@
           <div class="result-card">
             <h3>Congratulations!</h3>
             <p>
-              You escaped the Grammar Room because you understood the conditions.
+              You escaped the Grammar Room as long as your team understood the clues,
+              completed the missions, and received the teacher’s open keys.
             </p>
             <p class="english" id="savedRule"></p>
           </div>
@@ -519,7 +591,8 @@
           <div class="clue">
             Remember:<br />
             <strong>where</strong> explains a place.<br />
-            <strong>as long as</strong> can show a condition or time/duration.
+            <strong>as long as</strong> can show a condition or time/duration.<br />
+            <strong>unless</strong> means “if not.”
           </div>
 
           <div class="footer-buttons">
@@ -533,10 +606,16 @@
 
   <script>
     // =========================
-    // Teacher Settings
+    // Teacher Open Keys
     // =========================
-    // 수업 전에 교사용 해제키를 바꾸고 싶으면 아래 값만 수정하세요.
-    const TEACHER_KEY = "OPEN2";
+    // 학생 화면에는 정답 키가 보이지 않습니다.
+    const OPEN_KEYS = {
+      1: "sh1",
+      2: "sh2",
+      3: "sh3",
+      4: "sh4",
+      5: "sh5"
+    };
 
     let currentRoom = 0;
     let highestUnlocked = Number(localStorage.getItem("highestUnlocked") || "0");
@@ -565,11 +644,6 @@
       document.getElementById("room" + n).classList.add("active");
       currentRoom = n;
 
-      if (n > highestUnlocked && n <= 5) {
-        highestUnlocked = n - 1;
-        localStorage.setItem("highestUnlocked", String(highestUnlocked));
-      }
-
       if (n === 6) {
         document.getElementById("savedRule").textContent = finalRuleText ? "Your rule: " + finalRuleText : "";
       }
@@ -581,7 +655,7 @@
     function unlockNext(current) {
       highestUnlocked = Math.max(highestUnlocked, current);
       localStorage.setItem("highestUnlocked", String(highestUnlocked));
-      setTimeout(() => goToRoom(current + 1), 900);
+      setTimeout(() => goToRoom(current + 1), 700);
     }
 
     function showFeedback(id, type, message) {
@@ -590,57 +664,33 @@
       fb.innerHTML = message;
     }
 
-    function checkChoice(lockNumber, isCorrect) {
-      if (isCorrect) {
-        const messages = {
-          1: "Correct! Key B carries the number 13. Door 1 opened.",
-          3: "Correct! “Take as long as you need” gives you time. Password: NEED.",
-          4: "Correct! The spell will not disappear unless your team reads the sentence correctly."
-        };
-        showFeedback(lockNumber, "good", messages[lockNumber] || "Correct!");
+    function checkOpenKey(lockNumber) {
+      const input = document.getElementById("key" + lockNumber).value.trim();
+      if (input === OPEN_KEYS[lockNumber]) {
+        showFeedback(lockNumber, "good", "Open key accepted. Door " + lockNumber + " opened.");
         unlockNext(lockNumber);
       } else {
-        showFeedback(lockNumber, "bad", "Not yet. Read the clue again and try another answer.");
+        showFeedback(lockNumber, "bad", "The door is still locked. Ask your teacher after your answer is checked.");
       }
     }
 
-    function checkTeacherKey() {
-      const input = document.getElementById("teacherKey").value.trim().toUpperCase();
-      if (input === TEACHER_KEY) {
-        showFeedback(2, "good", "Teacher Key accepted! Door 2 opened.");
-        unlockNext(2);
+    function checkFinalOpenKey() {
+      const rule = document.getElementById("answer5").value.trim();
+      const input = document.getElementById("key5").value.trim();
+
+      if (!rule) {
+        showFeedback(5, "bad", "Write your rule first.");
+        return;
+      }
+
+      if (input === OPEN_KEYS[5]) {
+        finalRuleText = rule;
+        localStorage.setItem("finalRuleText", finalRuleText);
+        showFeedback(5, "good", "Final open key accepted. You escaped!");
+        setTimeout(() => goToRoom(6), 700);
       } else {
-        showFeedback(2, "bad", "The door is still locked. Win the Teacher Battle or complete the Retry Mission.");
+        showFeedback(5, "bad", "The final door is still locked. Ask your teacher after your rule is checked.");
       }
-    }
-
-    function normalizeText(text) {
-      return text.toLowerCase().replace(/\s+/g, " ").trim();
-    }
-
-    function checkFinalRule() {
-      const value = document.getElementById("finalRule").value.trim();
-      const normalized = normalizeText(value);
-
-      if (normalized.length < 20) {
-        showFeedback(5, "bad", "Write a full sentence first.");
-        return;
-      }
-
-      if (!normalized.includes("as long as")) {
-        showFeedback(5, "bad", "Use the expression “as long as” in your rule.");
-        return;
-      }
-
-      if (!normalized.startsWith("we can have")) {
-        showFeedback(5, "bad", "Start with the sentence frame: “We can have...”");
-        return;
-      }
-
-      finalRuleText = value;
-      localStorage.setItem("finalRuleText", finalRuleText);
-      showFeedback(5, "good", "Great rule! The final door is opening.");
-      setTimeout(() => goToRoom(6), 900);
     }
 
     function resetGame() {
@@ -648,12 +698,17 @@
       localStorage.removeItem("finalRuleText");
       highestUnlocked = 0;
       finalRuleText = "";
-      document.getElementById("teacherKey").value = "";
-      document.getElementById("finalRule").value = "";
+
+      ["answer1", "answer3", "answer4", "answer5", "key1", "key2", "key3", "key4", "key5"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+
       document.querySelectorAll(".feedback").forEach(fb => {
         fb.className = "feedback";
         fb.innerHTML = "";
       });
+
       goToRoom(0);
     }
 
